@@ -39,6 +39,12 @@ class Thomdo(QtGui.QDialog):
             for task in tasks:
                 self._add_task(task['title'], task['done'])
 
+    def return_pressed(self):
+        entered_text = self.ui.entryField.text()
+        if entered_text != "":
+            self.ui.entryField.clear()
+            self._add_task(entered_text, False)
+
     def _tasks(self):
         tasklist = self.ui.taskList
         return [tasklist.item(i) for i in range(tasklist.count())]
@@ -47,10 +53,7 @@ class Thomdo(QtGui.QDialog):
         json_tasks = []
         for task in self._tasks():
             done = (task.checkState() == QtCore.Qt.Checked)
-            json_task = {
-                "title": task.text(),
-                "done": done,
-            }
+            json_task = {"title": task.text(), "done": done}
             json_tasks.append(json_task)
         return json_tasks
 
@@ -62,13 +65,6 @@ class Thomdo(QtGui.QDialog):
         else:
             item.setCheckState(QtCore.Qt.Unchecked)
         self.ui.taskList.insertItem(0, item)
-
-    def return_pressed(self):
-        entered_text = self.ui.entryField.text()
-        if entered_text != "":
-            self.ui.entryField.clear()
-            self._add_task(entered_text, False)
-
 
 
 if __name__ == "__main__":
