@@ -7,11 +7,12 @@ A simple todo-list application written in Python + PySide
 
 import sys
 import json
-from PySide import QtCore, QtGui
+from PySide.QtCore import Qt
+from PySide.QtGui import QApplication, QDialog, QListWidgetItem
 from thomdo_gui import Ui_Thomdo
 
 
-class Thomdo(QtGui.QDialog):
+class Thomdo(QDialog):
     def __init__(self, parent=None):
         super(Thomdo, self).__init__(parent)
         self.ui = Ui_Thomdo()
@@ -25,7 +26,7 @@ class Thomdo(QtGui.QDialog):
     def clear(self):
         """ clears checked items """
         for item in self._tasks():
-            if item.checkState() == QtCore.Qt.Checked:
+            if item.checkState() == Qt.Checked:
                 row = self.ui.taskList.row(item)
                 self.ui.taskList.takeItem(row)
 
@@ -58,24 +59,24 @@ class Thomdo(QtGui.QDialog):
         """ returns all tasks as array of dictionaries """
         dicts = []
         for task in self._tasks():
-            done = (task.checkState() == QtCore.Qt.Checked)
+            done = (task.checkState() == Qt.Checked)
             dict = {"title": task.text(), "done": done}
             dicts.insert(0, dict)
         return dicts
 
     def _add_task(self, title, checked):
         """ inserts a task at the beginning of the ui.taskList widget """
-        item = QtGui.QListWidgetItem()
+        item = QListWidgetItem()
         item.setText(title)
         if checked:
-            item.setCheckState(QtCore.Qt.Checked)
+            item.setCheckState(Qt.Checked)
         else:
-            item.setCheckState(QtCore.Qt.Unchecked)
+            item.setCheckState(Qt.Unchecked)
         self.ui.taskList.insertItem(0, item)
 
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     thomdo = Thomdo()
     thomdo.show()
     app.exec_()
