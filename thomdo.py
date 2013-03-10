@@ -54,7 +54,7 @@ class Thomdo(QtGui.QDialog):
         for task in self._tasks():
             done = (task.checkState() == QtCore.Qt.Checked)
             json_task = {"title": task.text(), "done": done}
-            json_tasks.append(json_task)
+            json_tasks.insert(0, json_task)
         return json_tasks
 
     def _add_task(self, title, checked):
